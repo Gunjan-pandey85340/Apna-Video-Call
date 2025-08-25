@@ -9,7 +9,9 @@ import { connectToSocket } from "./controllers/socketManager.js";
 import cors from "cors";
 import { connect } from "node:http2";
 import userRoutes from "./routes/usersRoutes.js";
+import dotenv from "dotenv";
 
+dotenv.config();
 
 const app = express();
 const server = createServer(app); 
@@ -24,8 +26,9 @@ app.use(express.urlencoded({limit:"40kb",extended :true}));
 app.use("/api/v1/users" , userRoutes);
 
 
+
 const start = async () =>{
-    const connectionDb = await mongoose.connect("mongodb+srv://gunjanpandey91221:6e19XkBugk6LMqRK@cluster0.nnxvmgd.mongodb.net/apnavideocall");
+    const connectionDb = await mongoose.connect(process.env.MONGO_URI);
 
     console.log(`MONGO Connected DB Host : ${connectionDb.connection.host}` )
     server.listen(app.get("port"), () => {
